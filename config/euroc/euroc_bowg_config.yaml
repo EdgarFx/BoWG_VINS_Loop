@@ -1,0 +1,33 @@
+%YAML:1.0
+---
+
+dislocal: 50 # Distance between entries to be consider a match
+feature_cnt: 500 # feature in the original image scale
+ms_feature: 1 # use multi-scale features
+ms_levels: 1 # number of layers
+feature_size: 3.0 # considered feature size in the original image scale
+wg_weight_type: 0 # 0: TF-IDF; 1: TF; 2:IDF
+wg_scoring_type: 1 # 0: L1-norm; 1: L2-norm; 2: CHI_SQUARE; 3: KL; 4: BHATTACHARYYA; 5: DOT_PRODUCT
+use_wg: 1 # whether to use word group scpre
+use_distribution: 0 # whether to use distribution score
+w_weight: 0.7
+wg_weight: 0.3
+use_temporal_score: 1 # whether to use temporal score
+prev_weight: 0.5
+prev_larger_flag: 0
+
+# database query and post verification
+similarity_th: 0.2
+temporal_k: 0
+max_intraisland_gap: 3 # Max separation between matches to consider them of the same island
+max_distance_between_groups: 1 # Max separation between groups of matches to consider them consistent
+max_distance_between_queries: 1 # Max separation between two queries to consider them consistent
+use_geom: 0
+di_level: 5
+min_Fpoints: 12
+max_reprojection_error: 7.0
+ransac_probability: 0.99
+max_ransac_iterations: 300
+max_neighbor_ratio: 0.6
+min_prev_w_score: 0.03
+min_prev_wg_score: 0.015
