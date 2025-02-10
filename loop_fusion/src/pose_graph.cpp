@@ -412,9 +412,8 @@ int PoseGraph::detectLoop(KeyFrame* keyframe, int frame_index)
     cv::Point2f center_pt=cv::Point2f(keyframe->image.cols/2,keyframe->image.rows/2);
     std::vector<int> in_kernel_vec;
     if (USE_DISTRIBUTION) {
-        int batch = 36;
         // obtain the input of kernel density estimation
-        in_kernel_vec = db_wg.kernel_input(keyframe->keypoints,center_pt,batch);
+        in_kernel_vec = db_wg.kernel_input(keyframe->keypoints,center_pt,DISTRIBUTION_BATCH);
     }
 
     // keyframe word groups
@@ -463,11 +462,13 @@ int PoseGraph::detectLoop(KeyFrame* keyframe, int frame_index)
         
         db_wg.add(kf_bowgVector, frame_index);
 
-        if (USE_DISTRIBUTION)
-            db_wg.dist_add(in_kernel_vec);
-        
         db_wg.prev_bow_vec = cur_bow_vec;
         db_wg.prev_bowg_vec = kf_bowgVector;
+        
+        if (USE_DISTRIBUTION) {
+            db_wg.dist_add(in_kernel_vec);
+            db_wg.prev_dist_vec = in_kernel_vec;
+        }
         return -1;
     }
 
@@ -500,11 +501,13 @@ int PoseGraph::detectLoop(KeyFrame* keyframe, int frame_index)
 
     db_wg.add(kf_bowgVector, frame_index);
 
-    if (USE_DISTRIBUTION)
-        db_wg.dist_add(in_kernel_vec);
-
     db_wg.prev_bow_vec = cur_bow_vec;
     db_wg.prev_bowg_vec = kf_bowgVector;
+    
+    if (USE_DISTRIBUTION) {
+        db_wg.dist_add(in_kernel_vec);
+        db_wg.prev_dist_vec = in_kernel_vec;
+    }
 
     //printf("add feature time: %f", t_add.toc());
 
@@ -674,11 +677,13 @@ void PoseGraph::addKeyFrameIntoVoc(KeyFrame* keyframe)
     
     db_wg.add(kf_bowgVector, keyframe->index);
 
-    if (USE_DISTRIBUTION)
-        db_wg.dist_add(in_kernel_vec);
-    
     db_wg.prev_bow_vec = cur_bow_vec;
     db_wg.prev_bowg_vec = kf_bowgVector;
+    
+    if (USE_DISTRIBUTION) {
+        db_wg.dist_add(in_kernel_vec);
+        db_wg.prev_dist_vec = in_kernel_vec;
+    }
 
     // db.add(keyframe->brief_descriptors);
 }
