@@ -636,7 +636,7 @@ void BoWGDatabase::wg_queryDOT(const BoWGVector &vec, DBoW2::QueryResults &ret, 
 }
 
 void BoWGDatabase::query_words(DBoW2::QueryResults &in_ret, DBoW2::QueryResults &ret, DBoW2::BowVector &bowVector, int max_results, 
-                                    bool use_temporal_score, double prev_weight, bool prev_lt_flag)
+                                    bool use_temporal_score, double prev_weight_th, double temporal_param)
 {
     if (m_dtable.size()==0)
         return;
@@ -678,17 +678,8 @@ void BoWGDatabase::query_words(DBoW2::QueryResults &in_ret, DBoW2::QueryResults 
         else {
             auto it = last_query_res.find(img_id - 1);
             if (it != last_query_res.end()) {
-                if (!prev_lt_flag) {
-                    co_result.Score = prev_weight*it->second + (1.0-prev_weight)*cur_score;
-                }
-                else {
-                    if (it->second > cur_score) {
-                        co_result.Score = prev_weight*it->second + (1.0-prev_weight)*cur_score;
-                    }
-                    else {
-                        co_result.Score = cur_score;
-                    }
-                }
+                double prev_weight = prev_weight_th / ((it->second - cur_score)*(it->second - cur_score) / (temporal_param*temporal_param) + 1);
+                co_result.Score = prev_weight*it->second + (1.0-prev_weight)*cur_score;
             }
             else {
                 co_result.Score = cur_score;
@@ -711,7 +702,7 @@ void BoWGDatabase::query_words(DBoW2::QueryResults &in_ret, DBoW2::QueryResults 
 
 
 void BoWGDatabase::query_bowg(DBoW2::QueryResults &in_ret, DBoW2::QueryResults &ret, DBoW2::BowVector &bowVector, BoWGVector &bowgVector, 
-                                int max_results, int max_id, double w_weight, bool use_temporal_score, double prev_weight, bool prev_lt_flag)
+                        int max_results, int max_id, double w_weight, bool use_temporal_score, double prev_weight_th, double temporal_param)
 {
     if (m_dtable.size()==0)
         return;
@@ -810,17 +801,8 @@ void BoWGDatabase::query_bowg(DBoW2::QueryResults &in_ret, DBoW2::QueryResults &
         else {
             auto it = last_query_res.find(img_id - 1);
             if (it != last_query_res.end()) {
-                if (!prev_lt_flag) {
-                    co_result.Score = prev_weight*it->second + (1.0-prev_weight)*combined_score;
-                }
-                else {
-                    if (it->second > combined_score) {
-                        co_result.Score = prev_weight*it->second + (1.0-prev_weight)*combined_score;
-                    }
-                    else {
-                        co_result.Score = combined_score;
-                    }
-                }
+                double prev_weight = prev_weight_th / ((it->second - combined_score)*(it->second - combined_score) / (temporal_param*temporal_param) + 1);
+                co_result.Score = prev_weight*it->second + (1.0-prev_weight)*combined_score;
             }
             else {
                 co_result.Score = combined_score;
@@ -841,7 +823,7 @@ void BoWGDatabase::query_bowg(DBoW2::QueryResults &in_ret, DBoW2::QueryResults &
 }
 
 void BoWGDatabase::query_bowg(DBoW2::QueryResults &in_ret, DBoW2::QueryResults &ret, DBoW2::BowVector &bowVector, BoWGVector &bowgVector, std::vector<int> dist_vec, 
-                        int max_results, int max_id, double w_weight, double wg_weight, bool use_temporal_score, double prev_weight, bool prev_lt_flag)
+            int max_results, int max_id, double w_weight, double wg_weight, bool use_temporal_score, double prev_weight_th, double temporal_param)
 {
     if (m_dtable.size()==0)
         return;
@@ -953,17 +935,8 @@ void BoWGDatabase::query_bowg(DBoW2::QueryResults &in_ret, DBoW2::QueryResults &
         else {
             auto it = last_query_res.find(img_id - 1);
             if (it != last_query_res.end()) {
-                if (!prev_lt_flag) {
-                    co_result.Score = prev_weight*it->second + (1.0-prev_weight)*combined_score;
-                }
-                else {
-                    if (it->second > combined_score) {
-                        co_result.Score = prev_weight*it->second + (1.0-prev_weight)*combined_score;
-                    }
-                    else {
-                        co_result.Score = combined_score;
-                    }
-                }
+                double prev_weight = prev_weight_th / ((it->second - combined_score)*(it->second - combined_score) / (temporal_param*temporal_param) + 1);
+                co_result.Score = prev_weight*it->second + (1.0-prev_weight)*combined_score;
             }
             else {
                 co_result.Score = combined_score;

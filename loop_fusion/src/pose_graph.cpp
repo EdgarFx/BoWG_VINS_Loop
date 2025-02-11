@@ -476,17 +476,19 @@ int PoseGraph::detectLoop(KeyFrame* keyframe, int frame_index)
     db.query(keyframe->brief_descriptors, in_ret, frame_index - DISLOCAL, frame_index - DISLOCAL);
     if (USE_WG && USE_DISTRIBUTION) {
         db_wg.query_bowg(in_ret, ret, cur_bow_vec, kf_bowgVector, in_kernel_vec, frame_index - DISLOCAL, frame_index-DISLOCAL, 
-                W_WEIGHT, WG_WEIGHT, USE_TEMPORAL_SCORE, PREV_WEIGHT, PREV_LARGER_FLAG);
+                W_WEIGHT, WG_WEIGHT, USE_TEMPORAL_SCORE, TEMPORAL_PARAM);
     }
     else if (USE_WG) {
         db_wg.query_bowg(in_ret, ret, cur_bow_vec, kf_bowgVector, frame_index - DISLOCAL, frame_index-DISLOCAL, 
-                W_WEIGHT, USE_TEMPORAL_SCORE, PREV_WEIGHT, PREV_LARGER_FLAG);
+                W_WEIGHT, USE_TEMPORAL_SCORE, TEMPORAL_PARAM);
     }
     else {
-        db_wg.query_words(in_ret, ret, cur_bow_vec, frame_index - DISLOCAL, USE_TEMPORAL_SCORE, PREV_WEIGHT, PREV_LARGER_FLAG);
+        db_wg.query_words(in_ret, ret, cur_bow_vec, frame_index - DISLOCAL, USE_TEMPORAL_SCORE, TEMPORAL_PARAM);
     }
     //printf("query time: %f", t_query.toc());
     //cout << "Searching for Image " << frame_index << ". " << ret << endl;
+
+    db_wg.res_table[frame_index] = ret;
 
     if (ret.size() > static_cast<size_t>(3))
         ret.resize(3);

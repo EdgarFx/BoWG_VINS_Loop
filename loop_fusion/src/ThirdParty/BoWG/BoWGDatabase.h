@@ -106,11 +106,11 @@ public:
     * @param bowVector bowVector of the query image
     * @param max_results max number of results
     * @param use_temporal_score whether to use temporal score
-    * @param prev_weight the weight of previous score
-    * @param prev_lt_flag whether to require the previous score to be greater than the current score when using temporal score
+    * @param prev_weight_th the maximum previou score weight
+    * @param temporal_param temporal score parameter to compute the weight
     */ 
     void query_words(DBoW2::QueryResults &ret, DBoW2::QueryResults &out_ret, DBoW2::BowVector &bowVector, int max_results, 
-                        bool use_temporal_score=true, double prev_weight=0.5, bool prev_lt_flag=false);
+                        bool use_temporal_score=true, double prev_weight_th = 0.5, double temporal_param=1.0);
 
     /**
     * query the final results using normalized and temporal word score and word group score
@@ -122,11 +122,11 @@ public:
     * @param max_id the max id of images
     * @param w_weight the weight of word score for combined score
     * @param use_temporal_score whether to use temporal score
-    * @param prev_weight the weight of previous score
-    * @param prev_lt_flag whether to require the previous score to be greater than the current score when using temporal score
+    * @param prev_weight_th the maximum previou score weight
+    * @param temporal_param temporal score parameter to compute the weight
     */ 
-    void query_bowg(DBoW2::QueryResults &ret, DBoW2::QueryResults &out_ret, DBoW2::BowVector &bowVector, BoWGVector &bowgVector, 
-                    int max_results = 1, int max_id = -1, double w_weight=0.7, bool use_temporal_score=true, double prev_weight=0.5, bool prev_lt_flag=false);
+    void query_bowg(DBoW2::QueryResults &ret, DBoW2::QueryResults &out_ret, DBoW2::BowVector &bowVector, BoWGVector &bowgVector, int max_results = 1, 
+            int max_id = -1, double w_weight=0.7, bool use_temporal_score=true, double prev_weight_th = 0.5, double temporal_param=1.0);
 
     
     /**
@@ -141,11 +141,11 @@ public:
     * @param w_weight the weight of word score for combined score
     * @param wg_weight the weight of word group score for combined score
     * @param use_temporal_score whether to use temporal score
-    * @param prev_weight the weight of previous score
-    * @param prev_lt_flag whether to require the previous score to be greater than the current score when using temporal score
+    * @param prev_weight_th the maximum previou score weight
+    * @param temporal_param temporal score parameter to compute the weight
     */ 
-    void query_bowg(DBoW2::QueryResults &ret, DBoW2::QueryResults &out_ret, DBoW2::BowVector &bowVector, BoWGVector &bowgVector, std::vector<int> dist_vec, 
-                    int max_results = 1, int max_id = -1, double w_weight=0.35, double wg_weight=0.35, bool use_temporal_score=true, double prev_weight=0.5, bool prev_lt_flag=false);
+    void query_bowg(DBoW2::QueryResults &ret, DBoW2::QueryResults &out_ret, DBoW2::BowVector &bowVector, BoWGVector &bowgVector, std::vector<int> dist_vec, int max_results = 1, 
+        int max_id = -1, double w_weight=0.35, double wg_weight=0.35, bool use_temporal_score=true, double prev_weight_th = 0.5, double temporal_param=1.0);
 
     /**
     * compute the islands

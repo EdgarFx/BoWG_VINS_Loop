@@ -13,8 +13,8 @@ use_distribution: 0 # whether to use distribution score
 w_weight: 0.7
 wg_weight: 0.3
 use_temporal_score: 1 # whether to use temporal score
-prev_weight: 0.5
-prev_larger_flag: 0
+prev_weight_th: 0.5
+temporal_param: 6.0
 
 # database query and post verification
 similarity_th: 0.2
