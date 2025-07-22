@@ -8,11 +8,11 @@ ms_levels: 1 # number of layers
 feature_size: 3.0 # considered feature size in the original image scale
 wg_weight_type: 0 # 0: TF-IDF; 1: TF; 2:IDF
 wg_scoring_type: 1 # 0: L1-norm; 1: L2-norm; 2: CHI_SQUARE; 3: KL; 4: BHATTACHARYYA; 5: DOT_PRODUCT
-use_wg: 1 # whether to use word group scpre
+use_wg: 1 # whether to use word group score
 use_distribution: 0 # whether to use distribution score
 w_weight: 0.7
 wg_weight: 0.3
-use_temporal_score: 1 # whether to use temporal score
+use_temporal_score: 0 # whether to use temporal score
 prev_weight_th: 0.5
 temporal_param: 6.0
 
